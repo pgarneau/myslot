@@ -106,98 +106,92 @@ do
     end
 
     do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 38, 120)
-        b.text:SetText(L["Ignore Import/Export Action"])
-        b:SetChecked(MyslotSettings.ignoreAction)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.ignoreAction = self:GetChecked()
-            updateButton()
+        local b = CreateFrame("FRAME", nil, f, "UIDropDownMenuTemplate")
+        b:SetPoint("BOTTOMLEFT", 80, 45)
+        UIDropDownMenu_SetWidth(b, 150)
+        UIDropDownMenu_SetText(b, "Ignore On Import/Export:")
+
+        UIDropDownMenu_Initialize(b, function(self, level, menuList)
+            local info = UIDropDownMenu_CreateInfo()
+            if level or 1 == 1 then
+                -- Action Bars
+                info.text = "  Action Bars"
+                info.checked = MyslotSettings.ignoreAction
+                info.keepShownOnClick = 1
+                info.func = function()
+                    MyslotSettings.ignoreAction = not MyslotSettings.ignoreAction 
+                end
+                UIDropDownMenu_AddButton(info)
+
+                -- Key Bindings
+                info.text = "Key Bindings"
+                info.checked = MyslotSettings.ignoreBinding
+                info.func = function()
+                    MyslotSettings.ignoreBinding = not MyslotSettings.ignoreBinding
+                end
+                UIDropDownMenu_AddButton(info)
+
+                -- General Macros
+                info.text = "General Macros"
+                info.checked = MyslotSettings.ignoreGeneralMacro
+                info.func = function()
+                    MyslotSettings.ignoreGeneralMacro = not MyslotSettings.ignoreGeneralMacro
+                end
+                UIDropDownMenu_AddButton(info)
+
+                -- Character Macros
+                info.text = "Character Macros"
+                info.checked = MyslotSettings.ignoreMacro
+                info.func = function()
+                    MyslotSettings.ignoreMacro = not MyslotSettings.ignoreMacro
+                end
+                UIDropDownMenu_AddButton(info)
+            end
         end)
-        ignoreActionCheckbox = b
     end
 
     do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 38, 95)
-        b.text:SetText(L["Ignore Import/Export Key Binding"])
-        b:SetChecked(MyslotSettings.ignoreBinding)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.ignoreBinding = self:GetChecked()
-            updateButton()
-        end)
-        ignoreBindingCheckbox = b
-    end
+        local b = CreateFrame("FRAME", nil, f, "UIDropDownMenuTemplate")
+        b:SetPoint("BOTTOMLEFT", 375, 45)
+        UIDropDownMenu_SetWidth(b, 150)
+        UIDropDownMenu_SetText(b, "Clear During Import:")
+        UIDropDownMenu_Initialize(b, function(self, level, menuList)
+            local info = UIDropDownMenu_CreateInfo()
+            if level or 1 == 1 then
+                -- Action Bars
+                info.text = "  Action Bars"
+                info.checked = MyslotSettings.clearAction
+                info.keepShownOnClick = 1
+                info.func = function()
+                    MyslotSettings.clearAction = not MyslotSettings.clearAction 
+                end
+                UIDropDownMenu_AddButton(info)
 
-    do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 38, 70)
-        b.text:SetText(L["Ignore Import/Export Macro"])
-        b:SetChecked(MyslotSettings.ignoreMacro)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.ignoreMacro = self:GetChecked()
-            updateButton()
-        end)
-        ignoreMacroCheckbox = b
-    end
+                -- Key Bindings
+                info.text = "Key Bindings"
+                info.checked = MyslotSettings.clearBinding
+                info.func = function()
+                    MyslotSettings.clearBinding = not MyslotSettings.clearBinding
+                end
+                UIDropDownMenu_AddButton(info)
 
-    do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 38, 45)
-        b.text:SetText(L["Ignore General Macros"])
-        b:SetChecked(MyslotSettings.ignoreGeneralMacro)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.ignoreGeneralMacro = self:GetChecked()
-            updateButton()
-        end)
-        ignoreGeneralMacroCheckbox = b
-    end
+                -- General Macros
+                info.text = "General Macros"
+                info.checked = MyslotSettings.clearGeneralMacros
+                info.func = function()
+                    MyslotSettings.clearGeneralMacros = not MyslotSettings.clearGeneralMacros
+                end
+                UIDropDownMenu_AddButton(info)
 
-    do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 340, 120)
-        b.text:SetText(L["Clear Action before applying"])
-        b:SetChecked(MyslotSettings.clearAction)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.clearAction = self:GetChecked()
+                -- Character Macros
+                info.text = "Character Macros"
+                info.checked = MyslotSettings.clearMacro
+                info.func = function()
+                    MyslotSettings.clearMacro = not MyslotSettings.clearMacro
+                end
+                UIDropDownMenu_AddButton(info)
+            end
         end)
-        clearActionCheckbox = b
-    end
-
-    do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 340, 95)
-        b.text:SetText(L["Clear Binding before applying"])
-        b:SetChecked(MyslotSettings.clearBinding)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.clearBinding = self:GetChecked()
-        end)
-        clearBindingCheckbox = b
-    end
-
-    do
-        local b = CreateFrame("CheckButton", nil, f, "UICheckButtonTemplate")
-        b.text = b:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        b.text:SetPoint("LEFT", b, "RIGHT", 0, 1)
-        b:SetPoint("BOTTOMLEFT", 340, 70)
-        b.text:SetText(L["Clear Macro before applying"])
-        b:SetChecked(MyslotSettings.clearMacro)
-        b:SetScript("OnClick", function(self) 
-            MyslotSettings.clearMacro = self:GetChecked()
-        end)
-        clearMacroCheckbox = b
     end
 
     -- Gather options
